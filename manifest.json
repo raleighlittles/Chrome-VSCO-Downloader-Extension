@@ -1,14 +1,14 @@
 {
     "manifest_version": 2,
-    "name": "Instagram Post downloader",
-    "description": "Saves the contents of the selected Instagram post.",
+    "name": "VSCO Post downloader",
+    "description": "Saves the contents of the selected VSCO post.",
     "author": "Raleigh Littles",
-    "homepage_url": "https://github.com/raleighlittles/Instagram-Post-Downloader",
+    "homepage_url": "https://github.com/raleighlittles/VSCO-Downloader-Extension",
     "version": "0.1",
     "content_scripts": [
       {
         "matches": [
-          "https://www.instagram.com/p/*"
+          "https://vsco.co/*"
         ],
         "js": ["content.js"]
       }

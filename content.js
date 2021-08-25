@@ -5,18 +5,21 @@ chrome.runtime.onMessage.addListener(
           // Looks something like: https://<website>.jpg?w=<size>
           // We need to strip off everything after the image extension.
           const imgUrlUntruncated = document.querySelector("meta[property=og\\:image]")["content"];
+          const imgUrl = imgUrlUntruncated.split("?")[0];
+          console.log("Downloading from URL: ", imgUrl);
 
           const postAuthor = document.querySelector('meta[property=og\\:title]')["content"];
 
           const postDateObj = document.querySelector("time");
 
           // Date is of the form "<Month Name> <Day>, <Year>"
-          // Time is of the form: "AB:CD <A|P>M"
-
           const postDateRaw = postDateObj.children[0].innerText;
-          const postTimeRaw = postDateObj.children[1].innerText;
-
-          const postDateJSObj = Date.parse("".concat(postDateRaw, " ", postTimeRaw));
+          
+          // TODO: Include the time the post was uploaded
+          // Take the raw string date on the page, and convert it to a unix epoch, then convert that unix epoch to a datetime object
+          const postDateJSObj = new Date(Date.parse(postDateRaw));
+          
+          // Store the date the file was downloaded
           const today = new Date();
           const timestamp = 'DA_'.concat(today.getFullYear(),
                                     '-', today.getMonth() + 1,
@@ -27,35 +30,11 @@ chrome.runtime.onMessage.addListener(
         
          
         // Call chrome.runtime.sendMessage directly
+        const newFilename = "".concat("vsco__", postAuthor, "_", timestamp, "__", 'DC'.concat(postDateJSObj.getFullYear(),
+                                                                                              postDateJSObj.getMonth(),
+                                                                                              postDateJSObj.getDate()), ".jpg")
           
-
-
+        chrome.runtime.sendMessage({mediaUrl: imgUrl, filename: newFilename});
       }
-
-      function downloadMediaFromPost(mediaUrl, filenameToSaveAs) {
-          chrome.runtime.sendMessage({mediaUrl: mediaUrl, filename: filenameToSaveAs});
-      }
-
-      function constructDownloadedFilename(author, dateUploadedUnixTs) {
-          const today = new Date();
-          const timestamp = 'DA_'.concat(today.getFullYear(),
-                                  '-', today.getMonth(),
-                                  '-', today.getDate(),
-                                  'T', today.getHours(),
-                                  '', today.getMinutes(),
-                                  '', today.getSeconds());
-
-          // Unix epochs/timestamps are in units of seconds, whereas Javascript date objects use milliseconds.
-          const uploadDateObj = new Date(dateUploadedUnixTs * 1000);
-
-          const uploadDate = 'DC_'.concat(uploadDateObj.getFullYear(),
-              '-', uploadDateObj.getMonth() + 1, // Javascript months are 1-indexed, while days within months are 0-indexed
-              '-', uploadDateObj.getDate(),
-              'T', uploadDateObj.getHours(),
-              '', uploadDateObj.getMinutes(),
-              '', uploadDateObj.getSeconds());
-
-          return author.concat("__", timestamp, "__", uploadDate, (mediaFmt === "vid") ? "_v.mp4" : "_i.jpg");
-      }
-    }
+    } // end function
   );
