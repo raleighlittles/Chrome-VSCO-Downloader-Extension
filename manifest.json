@@ -1,0 +1,28 @@
+{
+    "manifest_version": 2,
+    "name": "Instagram Post downloader",
+    "description": "Saves the contents of the selected Instagram post.",
+    "author": "Raleigh Littles",
+    "homepage_url": "https://github.com/raleighlittles/Instagram-Post-Downloader",
+    "version": "0.1",
+    "content_scripts": [
+      {
+        "matches": [
+          "https://www.instagram.com/p/*"
+        ],
+        "js": ["content.js"]
+      }
+    ],
+    "browser_action": {
+
+    },
+    "icons": { "48":  "icons/icon48.png",
+              "128":  "icons/icon128.png"},
+    "background": {
+      "scripts": ["background.js"]
+    },
+    "permissions": [
+      "storage",
+      "downloads"
+  ]
+}
