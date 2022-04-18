@@ -2,7 +2,7 @@
 
 This is a Chrome extension for downloading posts from VSCO - a social network similar to Instagram.
 
-**Warning: Currently only image posts are supported, NOT videos.**
+Both image and videos are supported.
 
 # Installation
 
