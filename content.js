@@ -28,12 +28,10 @@ chrome.runtime.onMessage.addListener(
                 '', today.getMinutes(),
                 '', today.getSeconds());
 
-            const safeFilenameRegex = "/[\/:*|?\"<>|]/g";
-
             // Call chrome.runtime.sendMessage directly
             const newFilename = ("".concat("vsco__", postAuthor.indexOf(' ') > 0 ? "" : postAuthor, "__", timestamp, "__", 'DC'.concat(postDateJSObj.getFullYear(),
                 postDateJSObj.getMonth() + 1,
-                postDateJSObj.getDay()), ".jpg"));
+                postDateJSObj.getDate()), ".jpg"));
 
 
             console.log("Downloading file to location: ", newFilename);
